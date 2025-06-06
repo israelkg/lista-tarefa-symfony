@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Minhas Tarefas{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col justify-center items-center min-h-screen bg-gray-50 p-4"> 
+
+        <main class="w-full max-w-lg bg-white p-8 rounded-lg shadow-xl border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-blue-700 mb-6 text-center">Minhas Tarefas</h1>
+
+            <div class="mb-8 text-center">
+                <a class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
+                   href="{{ path('app_task_new') }}">
+                    Adicionar Nova Tarefa
+                </a>
+            </div>
+
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Lista de Tarefas</h2>
+
+                <div>
+                    {% if tasks is empty %}
+                        <p class="text-gray-600 text-lg text-center p-4 bg-yellow-50 rounded-md border border-yellow-200">Nenhuma tarefa foi cadastrada ainda. Adicione uma!</p>
+                    {% else %}
+                        <ul class="space-y-4">
+                            {% for task in tasks %}
+                                <li class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                    <span class="text-lg font-medium {{ task.isCompleted ? 'line-through text-gray-500' : 'text-gray-900' }}">
+                                        {{ task.title }} -
+                                        <span class="text-sm font-semibold {{ task.isCompleted ? 'text-green-600' : 'text-orange-500' }}">
+                                            {{ task.isCompleted ? 'Concluída' : 'Pendente' }}
+                                        </span>
+                                    </span>
+                                    <div>
+                                      <a class="bg-yellow-600 hover:bg-yellow-500 text-white text-sm font-semibold py-1 px-3 rounded-md transition duration-300 ease-in-out" href="{{ path('app_task_edit', {'id': task.id}) }}">Editar</a>
+                                      <form method="POST" action="{{ path('app_task_delete', {'id': task.id}) }}" onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?');" class="inline-block ml-2">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}"> {# Token CSRF #}
+                                        <button type="submit" class="bg-red-600 hover:bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded-md transition duration-300 ease-in-out cursor-pointer">Excluir</button>
+                                      </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+    </div>
+{% endblock %}

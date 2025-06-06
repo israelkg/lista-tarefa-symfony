@@ -1,0 +1,19 @@
+
+/var/
+/vendor/
+/.env.local
+/.env*.local
+/public/bundles/
+/public/build/
+/node_modules/
+
+
+.idea/ # PhpStorm/IntelliJ
+.vscode/ # VS Code
+*.iml
+.DS_Store # macOS
+
+
+/coverage/
+/phpunit.xml
+/phpunit.xml.dist
